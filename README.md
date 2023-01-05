@@ -18,7 +18,7 @@ The telescope is home-made, starting from a blank disk of glass, all the way to 
 **equatorial table** 
 
 * arduino Uno
-* 1 bigeasydriver
+* 1 bigeasydriver [http://www.schmalzhaus.com/BigEasyDriver/](URL)
 * powersupply
 * LM35 temperature sensor
 * DHT22 temperature and humidity sensor
@@ -52,17 +52,31 @@ The Odroid N2+ (4Gb RAM) runs Ubuntu Mate with Python3. Additional packages incl
 * python3-serial (USB communication with Arduino)
 * arduino IDE
 * camera-zwo-asi python [https://pypi.org/project/camera-zwo-asi/](URL)
+* VNC for remote access
 
 
-# EQUATORIAL TABLE: ARDUINO CODE
+# EQUATORIAL TABLE: ARDUINO UNO CODE
+The arduino Uno is in charge of the following tasks:
+
+  * driving the equatorial table stepper motor precisely the right speed to follow the stars
+  * detecting the status of limit switches to stop the motor when the equatorial table reaches the endpoint
+  * change the colour of an RGB LED according to the temperature of the bigeasydriver chip
+
+
+# ROCKER: ALT-AZ ARDUINO MEGA CODE
+The rocker arduino mega code is in charge of the following tasks:
+
+  * detect input from the IR sensor and activate the focus, ALT or AZ motors accordingly
+  * listen to input on the serial USB line from the Odroid Python code (get and return sensor values or activate stepper motors and return a "done" signal)
+  
+
+# ROCKER: PYTHON CODE
+There are two distinct Python3 scripts, which are automatically launched at login and positionned to the right of the screen, so that kstars / ekos can take up the left half of the screen.
+
+|   ![Alt text](img/gui.png)| ** SOLVE AND GOTO **       |
+|                           |                    ------- |
+|                           | This script displays a GUI |
 
 
 
-# ROCKER: ALT-AZ ARDUINO CODE
 
-
-
-# ROCKER: MOTOR AND SENSORS PYTHON CODE
-
-
-# ROCKER: SOLVE AND GOTO PYTHON CODE
