@@ -54,6 +54,13 @@ The telescope is home-made, starting from a blank disk of glass, all the way to 
 * IR sensor
 * LEDs, connectors, switches
 * 2 Nema 17 stepper motors
+ 
+**secondary cage**
+
+* stepper motor 28-BYJ48 (focus)
+* Crayford focuser (3D printed - credits to Jérôme, brother-in-law)
+* ASI ZWO 294MC Pro cooled [https://astronomy-imaging-camera.com/product/](URL)
+
 
 # ODROID CONFIGURATION
 
@@ -113,8 +120,6 @@ This script displays a GUI which allows the user to perform the following action
 
 # ASTROPHOTOGRAPHY RESULTS
 
-* Deep-sky camera: ASI ZWO 294MC Pro https://astronomy-imaging-camera.com/product/
-* connection: USB 3 cable to Odroid
 * acquisition: EKOS (based on indi client-server)
 * principle: take a number of exposures (up to 30s in the absence of an auto-guiding solution) and stack them (using software such as SIRIL)
 
@@ -128,8 +133,8 @@ More images on [astrobin](https://www.astrobin.com/users/d.legourrierec/)
 
 # WHAT'S NEXT ?
 
-* clean up the code (sometimes ALT is called dec for declination)
-* implement a function for autofocus
+* clean up the code (ALT called dec for declination, review python command to import modules)
+* implement a function for autofocus 
 * manage backlash
 * at some point, an autoguiding refractor will be added to the mount (yet more coding in perspective)
 
