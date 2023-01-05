@@ -112,5 +112,12 @@ More images on [astrobin](https://www.astrobin.com/users/d.legourrierec/)
 ![Alt text](img/M42-hdr-small.jpg)
 
 
+# WHAT'S NEXT ?
+
+* clean up the code (sometimes ALT is called dec for declination)
+* implement a function for autofocus
+* manage backlash
+* at some point, an autoguiding refractor will be added to the mount (yet more coding in perspective)
+
 
 
