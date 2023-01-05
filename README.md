@@ -3,7 +3,7 @@
 The code presented in this project has the following objectives:
 
   * drive the equatorial table in order to compensate the Earth rotation and follow a target in the sky
-  * drive the telescope ALT-AZ axis using either an Infra-Red remote or a Python-based interface
+  * drive the telescope axis: ALT ("altitude" or up-down) and AZ (Azimut or pivot) axis using either an Infra-Red remote or a Python-based interface
   * display sensor values (temperature and humidity)
   * assist the observer in reaching the target by offering a goto solution
 
@@ -82,7 +82,7 @@ This script displays a GUI which allows the user to perform the following action
   * focus (two speeds)
   * move ALT and AZ motors (3 speeds)
   * request and display sensor values
-  * detect if Arduino is connected: if not, display error and disable all buttons
+  * detect if Arduino is connected: if not, display message and disable all buttons
 
 
 **SOLVE AND GOTO**
@@ -92,7 +92,10 @@ This script displays a GUI which allows the user to perform the following action
   * get user input of a target (select catalog and reference number)
   * take or/and a single image (thanks to camera-asi-zwo)
   * get the sky coordinates of this image (thanks to astap)
-  * calibrate the telescope (the user must first manually move and point the telescope as near as possible to the target, 
+  * calibrate the telescope (the user must first manually move and point the telescope as near as possible to the target, then the script moves the motors several times, taking and solving images each time and works out how many ALT and AZ motor steps correspond to how many degrees in sky coordinates)
+  * compare telescope position and target coordinates
+  * automatically move to the target
+  * detect if the camera and the arduino are connected, if not disable buttons and display a message
 
 
 
