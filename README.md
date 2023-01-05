@@ -19,6 +19,7 @@ This project is about developing code that makes astrophotography possible with 
   * control a focus motor
   * display sensor values (temperature and humidity)
   * assist the observer in reaching the target by offering a goto solution
+  * stay warm inside and control the telescope via WiFi (thus also avoiding cables !)
 
 The telescope is home-made, starting from a blank disk of glass, all the way to fitting a camera for astrophotography. The whole project is being documented on instructables.com (link to be published later).
 
