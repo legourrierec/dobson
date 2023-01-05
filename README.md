@@ -97,6 +97,20 @@ This script displays a GUI which allows the user to perform the following action
   * automatically move to the target
   * detect if the camera and the arduino are connected, if not disable buttons and display a message
 
+# ASTROPHOTOGRAPHY RESULTS
+
+* Deep-sky camera: ASI ZWO 294MC Pro https://astronomy-imaging-camera.com/product/
+* connection: USB 3 cable to Odroid
+* acquisition: EKOS (based on indi client-server)
+* principle: take a number of exposures (up to 30s in the absence of an auto-guiding solution) and stack them (using software such as SIRIL)
+
+
+Here's an example of the capabilities of the telescope (Messier 42: Orion Nebula)
+More images on [astrobin](https://www.astrobin.com/users/d.legourrierec/)
+
+
+![Alt text](img/M42-hdr-small.jpg)
+
 
 
 
