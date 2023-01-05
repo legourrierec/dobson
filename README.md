@@ -75,7 +75,8 @@ There are two distinct Python3 scripts, which are automatically launched at logi
 
 ![Alt text](img/gui.png)
 
-** DOBSON CONTROL **
+**DOBSON CONTROL**
+
 This script displays a GUI which allows the user to perform the following actions:
 
   * focus (two speeds)
@@ -84,7 +85,7 @@ This script displays a GUI which allows the user to perform the following action
   * detect if Arduino is connected: if not, display error and disable all buttons
 
 
-** SOLVE AND GOTO **
+**SOLVE AND GOTO**
 
 This script displays a GUI which allows the user to perform the following actions:
 
