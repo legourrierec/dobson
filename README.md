@@ -1,9 +1,22 @@
-# INTRODUCTION
+# INTRODUCTION TO TELESCOPE MOUNTS
 
-The code presented in this project has the following objectives:
+When it comes to telescopes, there are two kind of mounts:
+
+* equatorial mounts (with a polar axis) which can easily follow stars as the Earth rotate, therefore often used for astrophotography which requires long exposures.
+* alt-az mounts (with an azimut and an altitude axis) which are more suited for visual observations. 
+
+Equatorial mounts are most of the time commercial as opposed to DIY and a good choice for small telescopes or refractors (<150mm diameter). For larger telescopes, there are alternative solutions such as "horse-shoe" mounts but those are more complex to build, heavier and bulky (hence more difficut to transport).
+
+Dobson telescope are a type of alt-az mounted Newton telescope (primary mirror + eleptical flat secondary mirror reflecting light at 90 degrees to the focuser). It's a popular design as it is not too heavy, and it is easier to build. However, in order to do some astrophotography with a Dobson telescope, it must be installed on an equatorial table, which can follow the sky as the Earth rotates.
+ 
+
+# PROJECT DESCRIPTION
+
+This project is about developing code that makes astrophotography possible with a Dobson telescope installed on an equatorial table. The objective is to:
 
   * drive the equatorial table in order to compensate the Earth rotation and follow a target in the sky
-  * drive the telescope axis: ALT ("altitude" or up-down) and AZ (Azimut or pivot) axis using either an Infra-Red remote or a Python-based interface
+  * drive the telescope axis: ALT ("altitude" or up-down) and AZ (Azimut or pivot) axis in order to refine the telescope position. This is achieved using either an Infra-Red remote or a Python-based interface
+  * control a focus motor
   * display sensor values (temperature and humidity)
   * assist the observer in reaching the target by offering a goto solution
 
