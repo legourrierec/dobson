@@ -71,11 +71,27 @@ The rocker arduino mega code is in charge of the following tasks:
   
 
 # ROCKER: PYTHON CODE
-There are two distinct Python3 scripts, which are automatically launched at login and positionned to the right of the screen, so that kstars / ekos can take up the left half of the screen.
+There are two distinct Python3 scripts, which are automatically launched at login and positionned next to each other, to the right of the screen, so that kstars / ekos can take up the left half of the screen.
 
-|   ![Alt text](img/gui.png)| ** SOLVE AND GOTO **       |
-|                           |                    ------- |
-|                           | This script displays a GUI |
+![Alt text](img/gui.png)
+
+** DOBSON CONTROL **
+This script displays a GUI which allows the user to perform the following actions:
+
+  * focus (two speeds)
+  * move ALT and AZ motors (3 speeds)
+  * request and display sensor values
+  * detect if Arduino is connected: if not, display error and disable all buttons
+
+
+** SOLVE AND GOTO **
+
+This script displays a GUI which allows the user to perform the following actions:
+
+  * get user input of a target (select catalog and reference number)
+  * take or/and a single image (thanks to camera-asi-zwo)
+  * get the sky coordinates of this image (thanks to astap)
+  * calibrate the telescope (the user must first manually move and point the telescope as near as possible to the target, 
 
 
 
