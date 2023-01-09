@@ -21,7 +21,12 @@ This project is about developing code that makes astrophotography possible with 
   * assist the observer in reaching the target by offering a goto solution
   * stay warm indoors and control the telescope via WiFi (thus also avoiding cables !)
 
-The telescope is home-made, starting from a blank disk of glass, all the way to fitting a camera for astrophotography. The whole project is being documented on [instructables.com](https://www.instructables.com/Dobson-Telescope-on-Equatorial-Table-WRITING-STILL/).
+
+# LINKS
+
+ The whole project is being documented on [instructables.com](https://www.instructables.com/Dobson-Telescope-on-Equatorial-Table-WRITING-STILL/). You will see how I have built the telescope, starting from a blank disk of glass, all the way to fitting a camera for astrophotography.
+
+Photos taken with the deep-sky camera are posted on a website dedicated to astrophotography: [astrobin](https://www.astrobin.com/users/d.legourrierec/).
 
 
 ![Alt text](img/dobson300-1500.jpg)
@@ -124,14 +129,14 @@ This script displays a GUI which allows the user to perform the following action
 * principle: take a number of exposures (up to 30s in the absence of an auto-guiding solution) and stack them (using software such as SIRIL)
 
 
-Here's an example of the capabilities of the telescope (Messier 42: Orion Nebula)
-More images on [astrobin](https://www.astrobin.com/users/d.legourrierec/)
+Here's an example of the capabilities of the telescope (Messier 42: Orion Nebula).
+You can see more images on my [astrobin](https://www.astrobin.com/users/d.legourrierec/) page.
 
 
 ![Alt text](img/M42-hdr-small.jpg)
 
 
-# WHAT'S NEXT ?
+# ROADMAP
 
 * clean up the code (ALT called dec for declination, review python command to import modules)
 * v2. implement a function for autofocus and manage backlash
