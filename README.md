@@ -21,7 +21,7 @@ This project is about developing code that makes astrophotography possible with 
   * assist the observer in reaching the target by offering a goto solution
   * stay warm indoors and control the telescope via WiFi (thus also avoiding cables !)
 
-The telescope is home-made, starting from a blank disk of glass, all the way to fitting a camera for astrophotography. The whole project is being documented on instructables.com (link to be published later).
+The telescope is home-made, starting from a blank disk of glass, all the way to fitting a camera for astrophotography. The whole project is being documented on [instructables.com](https://www.instructables.com/Dobson-Telescope-on-Equatorial-Table-WRITING-STILL/).
 
 
 ![Alt text](img/dobson300-1500.jpg)
@@ -134,9 +134,8 @@ More images on [astrobin](https://www.astrobin.com/users/d.legourrierec/)
 # WHAT'S NEXT ?
 
 * clean up the code (ALT called dec for declination, review python command to import modules)
-* implement a function for autofocus 
-* manage backlash
-* at some point, an autoguiding refractor will be added to the mount (yet more coding in perspective)
+* v2. implement a function for autofocus and manage backlash
+* v3. autoguiding with a refractor added to one of the side bearings
 
 
 
