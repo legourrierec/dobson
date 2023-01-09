@@ -123,6 +123,9 @@ This script displays a GUI which allows the user to perform the following action
   * automatically move to the target
   * detect if the camera and the arduino are connected, if not disable buttons and display a message
 
+![Alt text](img/M42-hdr-small.jpg)
+
+
 # ASTROPHOTOGRAPHY RESULTS
 
 * acquisition: EKOS (based on indi client-server)
@@ -131,9 +134,6 @@ This script displays a GUI which allows the user to perform the following action
 
 Here's an example of the capabilities of the telescope (Messier 42: Orion Nebula).
 You can see more images on my [astrobin](https://www.astrobin.com/users/d.legourrierec/) page.
-
-
-![Alt text](img/M42-hdr-small.jpg)
 
 
 # ROADMAP
