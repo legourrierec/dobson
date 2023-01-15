@@ -59,7 +59,7 @@ Photos taken with the deep-sky camera are posted on a website dedicated to astro
 * LEDs, connectors, switches
 * 2 Nema 17 stepper motors
  
-**secondary cage**
+**secondary box**
 
 * stepper motor 28-BYJ48 (focus)
 * Crayford focuser (3D printed - credits to Jérôme, brother-in-law)
@@ -105,8 +105,8 @@ There are two distinct Python3 scripts, which are automatically launched at logi
 This script displays a GUI which allows the user to perform the following actions:
 
   * focus (two speeds)
-  * move ALT and AZ motors (3 speeds)
-  * request and display sensor values
+  * move ALT and AZ motors (3 speeds) by a number of steps defined in the Arduino code
+  * request and display sensor values (humidity turns orange then red above 80 and 90% respectively)
   * detect if Arduino is connected: if not, display message and disable all buttons
 
 
@@ -119,7 +119,7 @@ This script displays a GUI which allows the user to perform the following action
   * get the sky coordinates of this image (thanks to astap)
   * calibrate the telescope (the user must first manually move and point the telescope as near as possible to the target, then the script moves the motors several times, taking and solving images each time and works out how many ALT and AZ motor steps correspond to how many degrees in sky coordinates)
   * compare telescope position and target coordinates
-  * automatically move to the target
+  * automatically move to the target  by a number of steps calculated in Python and send to Arduino
   * detect if the camera and the arduino are connected, if not disable buttons and display a message
 
 
