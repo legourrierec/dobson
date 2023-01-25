@@ -136,7 +136,6 @@ You can see more images on my [astrobin](https://www.astrobin.com/users/d.legour
 
 # ROADMAP
 
-* clean up the code (ALT called dec for declination, review python command to import modules)
 * v2. implement a function for autofocus and manage backlash
 * v3. autoguiding with a refractor added to one of the side bearings
 

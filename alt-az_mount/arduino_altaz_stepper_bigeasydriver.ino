@@ -8,14 +8,14 @@
 // IR sensor vs1838b
 // https://arduino.stackexchange.com/questions/3926/using-vs1838b-with-arduino
 
-// no joystick: we use IR remote -  we check continuously
-// this version includes DHT22 + LM35 sensors - we check every X seconds
-// version 3 : serial communication with Odroid Python
+// IR remote -  we check continuously
+// DHT22 + LM35 sensors - we check every X seconds
+// serial communication with Odroid Python
 // 3 speeds: all 8th step, with different max speed, position and acceleration
-// version catches up with backlash if previous dir opposit to requested dir
+// catches up with backlash if previous dir opposit to requested dir
 // this makes use of a second instance of each stepper (Backlash_) with specific speed
-
-// v10 = custom movement for python goto, feedback for all actions
+// custom movement for python goto, feedback for all actions
+// normalised name to ALT instead of DEC or DE
 
 // focus connector:
 
@@ -42,7 +42,7 @@
 // 2   8   6  
 //  1     7
 
-// steps Az et Delta
+// steps Az et Alt
 // https://www.brainy-bits.com/post/stepper-motor-microstepping-what-to-keep-in-mind-when-doing-it
 // MS1 MS2 
 //
@@ -61,20 +61,20 @@
 //AccelStepper stepper = AccelStepper(MotorInterfaceType, motorPin1, motorPin3, motorPin2, motorPin4);
 AccelStepper FocusStepper = AccelStepper(HALFSTEP,7,9,8,10);  // IN 1 3 2 4
 
-// PIN steps Az et Delta
+// PIN steps Az et Alt
 #define PIN_AZ_MS1 32 // red
 #define PIN_AZ_MS2 34 // black
-#define PIN_DE_MS1 30  // blue
-#define PIN_DE_MS2 28  // yellow
+#define PIN_ALT_MS1 30  // blue
+#define PIN_ALT_MS2 28  // yellow
 
 // PIN steppers telescope
-#define  PIN_delta_Sleep  49 
+#define  PIN_alt_Sleep  49 
 #define  PIN_azimut_Sleep  40 
 AccelStepper AzimutStepper(AccelStepper::DRIVER, 38, 48); //step, dir
-AccelStepper DeltaStepper(AccelStepper::DRIVER, 43, 42);
+AccelStepper AltStepper(AccelStepper::DRIVER, 43, 42);
 
 AccelStepper Backlash_AzimutStepper(AccelStepper::DRIVER, 38, 48); //step, dir
-AccelStepper Backlash_DeltaStepper(AccelStepper::DRIVER, 43, 42);
+AccelStepper Backlash_AltStepper(AccelStepper::DRIVER, 43, 42);
 
 // PIN sensors
 #define  PIN_LM35 A2  //glued to driver heatsink
@@ -98,7 +98,7 @@ DHT dht_eq_table(PIN_DHT22_eq_table, DHTTYPE); //// Initialize DHT sensor
 #define KEY_REPEAT (0)
 
 ///////////// small remote - not very convenient ////////////
-//// for azimut and delta 
+//// for azimut and alt 
 //#define KEY_1 (4077715200)
 //#define KEY_2 (3877175040)
 //#define KEY_3 (2707357440)
@@ -122,7 +122,7 @@ DHT dht_eq_table(PIN_DHT22_eq_table, DHTTYPE); //// Initialize DHT sensor
 
 ///////////// telecommande de la box ////////////
 
-// for azimut and delta 
+// for azimut and alt 
 
 #define KEY_U (902495489) // up
 #define KEY_L (1721367809) // left
@@ -152,9 +152,9 @@ unsigned int measurepreviousMillis = 0;
 
 // initialise variables
 unsigned int azimutValue = 0;
-unsigned int deltaValue = 0;
+unsigned int altValue = 0;
 int azimut_new_speed = 0;
-int delta_new_speed = 0;
+int alt_new_speed = 0;
 float h_intake = 0;
 float t_intake = 0;
 float h_outflow = 0;
@@ -167,7 +167,7 @@ int sensors = 0;
 char odroid_serial;
 int dir = 1;
 int posi = 1600;
-int previous_delta_dir = 0;
+int previous_alt_dir = 0;
 int previous_azimut_dir = 0;
 
 ////////////////////////////////////// 
@@ -204,42 +204,42 @@ void Focus(int dir, int pos, int sp) {
           odroid_serial = ' ';
 }
 
-// steps applies to Azimut and Delta steppers
+// steps applies to Azimut and Alt steppers
 
 
 void slow() {
             AzimutStepper.setMaxSpeed(300.0);
-            DeltaStepper.setMaxSpeed(300.0);
+            AltStepper.setMaxSpeed(300.0);
             AzimutStepper.setAcceleration(500.0);
-            DeltaStepper.setAcceleration(500.0);
+            AltStepper.setAcceleration(500.0);
                digitalWrite(PIN_AZ_MS1, HIGH);            
                digitalWrite(PIN_AZ_MS2, HIGH);
-               digitalWrite(PIN_DE_MS1, HIGH);            
-               digitalWrite(PIN_DE_MS2, HIGH);
+               digitalWrite(PIN_ALT_MS1, HIGH);            
+               digitalWrite(PIN_ALT_MS2, HIGH);
                posi = 800;
 }
 
 void normal() {
             AzimutStepper.setMaxSpeed(600.0);
-            DeltaStepper.setMaxSpeed(600.0);
+            AltStepper.setMaxSpeed(600.0);
             AzimutStepper.setAcceleration(1000.0);
-            DeltaStepper.setAcceleration(1000.0);
+            AltStepper.setAcceleration(1000.0);
                digitalWrite(PIN_AZ_MS1, HIGH);            
                digitalWrite(PIN_AZ_MS2, HIGH);
-               digitalWrite(PIN_DE_MS1, HIGH);            
-               digitalWrite(PIN_DE_MS2, HIGH);
+               digitalWrite(PIN_ALT_MS1, HIGH);            
+               digitalWrite(PIN_ALT_MS2, HIGH);
                posi = 1600;
 }
 
 void fast() {
             AzimutStepper.setMaxSpeed(1200.0);
-            DeltaStepper.setMaxSpeed(1200.0);
+            AltStepper.setMaxSpeed(1200.0);
             AzimutStepper.setAcceleration(1500.0);
-            DeltaStepper.setAcceleration(1500.0);
+            AltStepper.setAcceleration(1500.0);
                digitalWrite(PIN_AZ_MS1, HIGH);            
                digitalWrite(PIN_AZ_MS2, HIGH);
-               digitalWrite(PIN_DE_MS1, HIGH);            
-               digitalWrite(PIN_DE_MS2, HIGH);
+               digitalWrite(PIN_ALT_MS1, HIGH);            
+               digitalWrite(PIN_ALT_MS2, HIGH);
                posi = 3200;
 }
 
@@ -250,56 +250,56 @@ void custom(int gosteps) {
             else
               { maxi = gosteps; }
             AzimutStepper.setMaxSpeed(int(maxi/2.6));
-            DeltaStepper.setMaxSpeed(int(maxi/2.6));
+            AltStepper.setMaxSpeed(int(maxi/2.6));
             AzimutStepper.setAcceleration(int(maxi/2));
-            DeltaStepper.setAcceleration(int(maxi/2));
+            AltStepper.setAcceleration(int(maxi/2));
                digitalWrite(PIN_AZ_MS1, HIGH);            
                digitalWrite(PIN_AZ_MS2, HIGH);
-               digitalWrite(PIN_DE_MS1, HIGH);            
-               digitalWrite(PIN_DE_MS2, HIGH);
+               digitalWrite(PIN_ALT_MS1, HIGH);            
+               digitalWrite(PIN_ALT_MS2, HIGH);
                posi = gosteps;
 }
 
 // not used anymore
 void fullstep() {
             AzimutStepper.setMaxSpeed(200.0);
-            DeltaStepper.setMaxSpeed(200.0);
+            AltStepper.setMaxSpeed(200.0);
             AzimutStepper.setAcceleration(1000.0);
-            DeltaStepper.setAcceleration(1000.0);
+            AltStepper.setAcceleration(1000.0);
                digitalWrite(PIN_AZ_MS1, LOW);            
                digitalWrite(PIN_AZ_MS2, LOW);
-               digitalWrite(PIN_DE_MS1, LOW);            
-               digitalWrite(PIN_DE_MS2, LOW);
+               digitalWrite(PIN_ALT_MS1, LOW);            
+               digitalWrite(PIN_ALT_MS2, LOW);
 }
 
 /// changed "int pos" to "int posi" ///
-void Delta(int dir, int posi) {
-          DeltaStepper.setCurrentPosition(0);
+void Alt(int dir, int posi) {
+          AltStepper.setCurrentPosition(0);
           digitalWrite(LED_BUILTIN, LOW);
           delay(100);
-          digitalWrite(PIN_delta_Sleep, HIGH);
+          digitalWrite(PIN_alt_Sleep, HIGH);
           
           // no acceleration
-          //DeltaStepper.setSpeed(200*dir);
-          //while(DeltaStepper.currentPosition()!=200*dir) {
-          //  DeltaStepper.runSpeed();
+          //AltStepper.setSpeed(200*dir);
+          //while(AltStepper.currentPosition()!=200*dir) {
+          //  AltStepper.runSpeed();
           //}
 
 
-        if ( previous_delta_dir == -1*dir ) {
-        Backlash_DeltaStepper.setMaxSpeed(2500.0);
-        Backlash_DeltaStepper.setSpeed(2500*dir);
-            while(Backlash_DeltaStepper.currentPosition()!=1500*dir) {
-            Backlash_DeltaStepper.runSpeed();
+        if ( previous_alt_dir == -1*dir ) {
+        Backlash_AltStepper.setMaxSpeed(2500.0);
+        Backlash_AltStepper.setSpeed(2500*dir);
+            while(Backlash_AltStepper.currentPosition()!=1500*dir) {
+            Backlash_AltStepper.runSpeed();
             }
         } 
           
           
           //// with acceleration
-          DeltaStepper.runToNewPosition(posi*dir);
+          AltStepper.runToNewPosition(posi*dir);
           
           digitalWrite(LED_BUILTIN, HIGH);
-          digitalWrite(PIN_delta_Sleep, LOW);
+          digitalWrite(PIN_alt_Sleep, LOW);
           delay(130);
           //odroid_serial = 'R'; // rien
           
@@ -307,7 +307,7 @@ void Delta(int dir, int posi) {
           delay(1000);
           odroid_serial = ' ';
 
-          previous_delta_dir = dir;
+          previous_alt_dir = dir;
 }
 
 void Azimut(int dir, int posi) {
@@ -363,13 +363,13 @@ void setup() {
 
   // AccelStepper value:max speeed and acceleration - default values for 1/2 step
   AzimutStepper.setMaxSpeed(600.0);
-  DeltaStepper.setMaxSpeed(600.0);
+  AltStepper.setMaxSpeed(600.0);
   AzimutStepper.setAcceleration(1000.0);
-  DeltaStepper.setAcceleration(1000.0);
+  AltStepper.setAcceleration(1000.0);
 
  
   pinMode(PIN_azimut_Sleep, OUTPUT);
-  pinMode(PIN_delta_Sleep, OUTPUT);
+  pinMode(PIN_alt_Sleep, OUTPUT);
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);
@@ -377,20 +377,20 @@ void setup() {
 
   pinMode(PIN_AZ_MS1, OUTPUT);
   pinMode(PIN_AZ_MS2, OUTPUT);
-  pinMode(PIN_DE_MS1, OUTPUT);
-  pinMode(PIN_DE_MS2, OUTPUT);
+  pinMode(PIN_ALT_MS1, OUTPUT);
+  pinMode(PIN_ALT_MS2, OUTPUT);
 
 
 
 // set default step to 1/2 step ( key CH )
   digitalWrite(PIN_AZ_MS1, HIGH);            
   digitalWrite(PIN_AZ_MS2, HIGH);
-  digitalWrite(PIN_DE_MS1, HIGH);            
-  digitalWrite(PIN_DE_MS2, HIGH);
+  digitalWrite(PIN_ALT_MS1, HIGH);            
+  digitalWrite(PIN_ALT_MS2, HIGH);
 
 // Set the Sleep mode to sleep.
   digitalWrite(PIN_azimut_Sleep, LOW);            
-  digitalWrite(PIN_delta_Sleep, LOW);             
+  digitalWrite(PIN_alt_Sleep, LOW);             
 
   Serial.begin(9600);
   Serial.setTimeout(1000); // in ms, used to stop Serial read string
@@ -504,7 +504,7 @@ if (odroid_serial =='K') {
     delay(200);
     //move !
     custom(gosteps);
-    Delta(-1,posi);
+    Alt(-1,posi);
     odroid_serial = ' '; // rien
     }
  }
@@ -526,7 +526,7 @@ if (odroid_serial =='K') {
     delay(200);
     //move !
     custom(gosteps);
-    Delta(1,posi);
+    Alt(1,posi);
     odroid_serial = ' '; // rien
     }
  }
@@ -546,17 +546,17 @@ if (odroid_serial =='S') {
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CCW
+// if odroid requests alt run CCW
 if (odroid_serial =='H') {
           slow();
-          Delta(-1,posi);
+          Alt(-1,posi);
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CW
+// if odroid requests alt run CW
 if (odroid_serial =='I') {
           slow();
-          Delta(1,posi);
+          Alt(1,posi);
           odroid_serial = ' ';
  } 
 
@@ -578,17 +578,17 @@ if (odroid_serial =='Z') {
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CCW
+// if odroid requests alt run CCW
 if (odroid_serial =='E') {
           normal();
-          Delta(-1,posi);
+          Alt(-1,posi);
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CW
+// if odroid requests alt run CW
 if (odroid_serial =='D') {
           normal();
-          Delta(1,posi);
+          Alt(1,posi);
           odroid_serial = ' ';
  } 
 
@@ -610,18 +610,18 @@ if (odroid_serial =='V') {
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CCW
+// if odroid requests alt run CCW
 if (odroid_serial =='J') {
           fast();
-          Delta(-1,posi);
+          Alt(-1,posi);
           delay(100);
           odroid_serial = ' ';
  }
 
-// if odroid requests delta run CW
+// if odroid requests alt run CW
 if (odroid_serial =='U') {
           fast();
-          Delta(1,posi);
+          Alt(1,posi);
           delay(100);
           odroid_serial = ' ';
  } 
@@ -659,12 +659,12 @@ if (odroid_serial =='T') {
     IrReceiver.resume();
     FocusStepper.setCurrentPosition(0);
     AzimutStepper.setCurrentPosition(0);
-    DeltaStepper.setCurrentPosition(0);
+    AltStepper.setCurrentPosition(0);
 
 
    switch (IrReceiver.decodedIRData.decodedRawData) {
 
-// step for AZ et DELTA
+// step for AZ et ALT
 
       //1
      case KEY_1: 
@@ -742,17 +742,17 @@ if (odroid_serial =='T') {
             } 
       break;
 
-// IR sensor section for stepper delta
+// IR sensor section for stepper alt
 
  case KEY_U:
-          Delta(-1,posi);
+          Alt(-1,posi);
             if (IrReceiver.decode()) {
             IrReceiver.resume();  
             } 
       break;
 
  case KEY_D:
-          Delta(1,posi);
+          Alt(1,posi);
             if (IrReceiver.decode()) {
             IrReceiver.resume();          
             } 
@@ -765,7 +765,7 @@ if (odroid_serial =='T') {
 
   digitalWrite(LED_BUILTIN, HIGH);
   digitalWrite(PIN_azimut_Sleep, LOW);
-  digitalWrite(PIN_delta_Sleep, LOW);
+  digitalWrite(PIN_alt_Sleep, LOW);
   digitalWrite(7, LOW);
   digitalWrite(8, LOW);
   digitalWrite(9, LOW);

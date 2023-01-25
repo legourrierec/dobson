@@ -30,7 +30,7 @@
 
 ## variables:
 
-# plan dobson:      AZ= azimut              VC= vertical
+# plan dobson:      AZ= azimut              ALT= altitude
 # plan astro:       RA= right ascension     DEC= declination    spd=south pole declination (+90)
 # direction:        p= positive             n= negative
 # object:           target= target          img = image
@@ -43,12 +43,12 @@
 # get_image_coord       get image coordinates using astap
 # solve_single_img      calls in sequence get_target_coord and get_image_coord
 # angle                 returns angle between astro and dobson axis
-# convert_coord         convert astronomical ra/dec to dobson az/vc
+# convert_coord         convert astronomical ra/dec to dobson az/alt
 # browse_image          browse to get and solve single image
 # calibrate             work out angle between astro and dobson axis, and displacement per move, returns position to target on dobson axis
 #                           calls get_target_coord, zwo_image, get_image_coord then, compare_coord 
 # go_to                 confirm and trigger motors, re-evaluate if target not reached
-# azimut,delta,focus    arduino stepper requests
+# azimut,alt,focus    arduino stepper requests
 # wait_for_arduino      allows for feedback as to when action has been completed
 
 
@@ -179,21 +179,21 @@ def azimut_moins_3():
     #info_label.config(text="done moving az---", background=tk_bkgd)
 
 
-# delta
+# alt
 
-def delta_plus_1():
+def alt_plus_1():
     ser.write(bytes('I','UTF-8'))
 
-def delta_moins_1():
+def alt_moins_1():
     ser.write(bytes('H','UTF-8'))
 
-def delta_plus_2():
+def alt_plus_2():
     ser.write(bytes('D','UTF-8'))
 
-def delta_moins_2():
+def alt_moins_2():
     ser.write(bytes('E','UTF-8'))
 
-def delta_plus_3():
+def alt_plus_3():
     info = (datetime.datetime.now()).strftime("%X") + " => moving D +++"
     done_label.configure(text=str(info))
     done_label.update()
@@ -201,9 +201,9 @@ def delta_plus_3():
     sleep(0.5)  
     wait_for_arduino()
     #sleep(5)         # just to make sure Dobson is stable before image
-    #info_label.config(text="done moving delta+++", background=tk_bkgd)
+    #info_label.config(text="done moving alt+++", background=tk_bkgd)
 
-def delta_moins_3():
+def alt_moins_3():
     info = (datetime.datetime.now()).strftime("%X") + " => moving D ---"
     done_label.configure(text=str(info))
     done_label.update()
@@ -211,7 +211,7 @@ def delta_moins_3():
     sleep(0.5) 
     wait_for_arduino()
     #sleep(5)         # just to make sure Dobson is stable before image
-    #info_label.config(text="done moving delta---", background=tk_bkgd)
+    #info_label.config(text="done moving alt---", background=tk_bkgd)
 
 
 # focus
@@ -584,8 +584,8 @@ def calibrate():
     ref_img = []            # reference of moves for troubleshooting
     diff_AZ_RA = []         # trigger AZ, difference in RA coordinates
     diff_AZ_DEC = []        # trigger AZ, difference in DEC coordinates
-    diff_VC_RA = []         # trigger VC, difference in RA coordinates (VC or delta: same)
-    diff_VC_DEC = []        # trigger VC, difference in RA coordinates
+    diff_ALT_RA = []         # trigger ALT, difference in RA coordinates 
+    diff_ALT_DEC = []        # trigger ALT, difference in RA coordinates
     filepath = "/home/dlg/Documents/python/calibration_image.png"
 
     info = (datetime.datetime.now()).strftime("%X") + " => one move A- for backlash"
@@ -615,11 +615,11 @@ def calibrate():
     info = (datetime.datetime.now()).strftime("%X") + " => one move D- for backlash"
     done_label.configure(text=str(info))
     done_label.update()        
-    delta_moins_3()       # make sure catch up backlash             
+    alt_moins_3()       # make sure catch up backlash             
         
     for move in range(4,8):
         print("d- ",move)
-        delta_moins_3()
+        alt_moins_3()
         #testing
         #use_set_of_image(move)
         zwo_image()
@@ -630,9 +630,9 @@ def calibrate():
         dec_img_list.append(dec_img_tmp)
         if (move != 4):
             diff_temp = float("{:.2f}".format(abs(float(ra_img_list[move]) - float(ra_img_list[move - 1]))))
-            diff_VC_RA.append(diff_temp)
+            diff_ALT_RA.append(diff_temp)
             diff_temp = float("{:.2f}".format(abs(float(dec_img_list[move]) - float(dec_img_list[move - 1]))))
-            diff_VC_DEC.append(diff_temp)
+            diff_ALT_DEC.append(diff_temp)
         #print(ra_img,dec_img)  
         calibrate_progress['value'] += 6.66667      
         
@@ -641,11 +641,11 @@ def calibrate():
     done_label.configure(text=str(info))
     done_label.update()
     sleep(2)
-    delta_plus_3()       # make sure catch up backlash       
+    alt_plus_3()       # make sure catch up backlash       
         
     for move in range(8,12):
         print("d+ ",move)
-        delta_plus_3()
+        alt_plus_3()
         #testing
         #use_set_of_image(move)
         zwo_image()
@@ -656,9 +656,9 @@ def calibrate():
         dec_img_list.append(dec_img_tmp)
         if (move != 8):
             diff_temp = float("{:.2f}".format(abs(float(ra_img_list[move]) - float(ra_img_list[move - 1]))))
-            diff_VC_RA.append(diff_temp)
+            diff_ALT_RA.append(diff_temp)
             diff_temp = float("{:.2f}".format(abs(float(dec_img_list[move]) - float(dec_img_list[move - 1]))))
-            diff_VC_DEC.append(diff_temp)
+            diff_ALT_DEC.append(diff_temp)
         #print(ra_img,dec_img)     
         calibrate_progress['value'] += 6.66667
 
@@ -693,24 +693,24 @@ def calibrate():
     #print(dec_img)
     #print("diff AZ_RA",diff_AZ_RA)
     #print("diff AZ_DEC",diff_AZ_DEC)
-    #print("diff VC_RA",diff_VC_RA)
-    #print("diff VC_DEC",diff_VC_DEC)     
+    #print("diff ALT_RA",diff_ALT_RA)
+    #print("diff ALT_DEC",diff_ALT_DEC)     
     
     # each of those diffs looks like this   [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]    
     # we want an average of the absolute values 
     
     diff_AZ_RA = float("{:.2f}".format(mean(diff_AZ_RA)))
     diff_AZ_DEC = float("{:.2f}".format(mean(diff_AZ_DEC)))
-    diff_VC_RA = float("{:.2f}".format(mean(diff_VC_RA)))
-    diff_VC_DEC = float("{:.2f}".format(mean(diff_VC_DEC)))
+    diff_ALT_RA = float("{:.2f}".format(mean(diff_ALT_RA)))
+    diff_ALT_DEC = float("{:.2f}".format(mean(diff_ALT_DEC)))
     
     #print("diff AZ_RA",diff_AZ_RA)
     #print("diff AZ_DEC",diff_AZ_DEC)
-    #print("diff VC_RA",diff_VC_RA)
-    #print("diff VC_DEC",diff_VC_DEC)
+    #print("diff ALT_RA",diff_ALT_RA)
+    #print("diff ALT_DEC",diff_ALT_DEC)
     
     angle1 = calculate_angle(diff_AZ_RA,diff_AZ_DEC) 
-    angle2 = calculate_angle(diff_VC_RA,diff_VC_DEC)
+    angle2 = calculate_angle(diff_ALT_RA,diff_ALT_DEC)
     
     angle_av = float("{:.2f}".format((angle1 + angle2) / 2))
     angle_degrees = "{:.1f}".format(degrees(angle_av))
@@ -721,7 +721,7 @@ def calibrate():
     angle_value.update()
     
     step_az_tuple = convert_coord(diff_AZ_RA,diff_AZ_DEC,angle_av)
-    step_vc_tuple = convert_coord(diff_VC_RA,diff_VC_DEC,angle_av)
+    step_vc_tuple = convert_coord(diff_ALT_RA,diff_ALT_DEC,angle_av)
     
     #print(step_az) 
     #print(step_vc)
@@ -781,7 +781,7 @@ def compare():
     #print("vc_img_d= ",vc_img_d, "vc_target_d= ",vc_target_d)  
 
     AZ_diff_image_target = float(az_img_d) - float(az_target_d)
-    VC_diff_image_target = float(vc_img_d) - float(vc_target_d)
+    ALT_diff_image_target = float(vc_img_d) - float(vc_target_d)
     
     RA_diff_image_target = float(ra_img) - float(ra_target)
     DEC_diff_image_target = float(dec_img) - float(dec_target)
@@ -791,10 +791,10 @@ def compare():
     # and this is by how much steppers should move to go to target
     
     stepper_az = int(( AZ_diff_image_target / step_az ) * 3200 * -1)
-    stepper_vc = int(( VC_diff_image_target / step_vc ) * 3200 * -1)
+    stepper_vc = int(( ALT_diff_image_target / step_vc ) * 3200 * -1)
     
     diff_az_value.config(text="{:.2f}".format(AZ_diff_image_target),background=tk_bkgd)
-    diff_vc_value.config(text="{:.2f}".format(VC_diff_image_target),background=tk_bkgd)
+    diff_vc_value.config(text="{:.2f}".format(ALT_diff_image_target),background=tk_bkgd)
     diff_ra_value.config(text="{:.2f}".format(RA_diff_image_target),background=tk_bkgd)
     diff_dec_value.config(text="{:.2f}".format(DEC_diff_image_target),background=tk_bkgd)
 
@@ -1155,29 +1155,29 @@ take image, solve, get coordinates, add diff to diff_AZn_RA and diff_AZn_DEC
 take image, solve, get coordinates, add diff to diff_AZn_RA and diff_AZn_DEC
 average of diff_AZn_RA and diff_AZn_DEC
 
-1 coup de moteur VC+++ pour rattraper le jeu
-initialise diff_VCp_RA and diff_VCp_DEC at 0
+1 coup de moteur ALT+++ pour rattraper le jeu
+initialise diff_ALTp_RA and diff_ALTp_DEC at 0
 take image, solve, get coordinates as RA_start and DEC_start
 start loop 3x
-1 coup de moteurs VC+++  
-take image, solve, get coordinates, save diff as diff_VCp_RA and diff_VCp_DEC at 0
-1 coup de moteurs VC+++  
-take image, solve, get coordinates, add diff to diff_VCp_RA and diff_VCp_DEC at 0
-1 coup de moteurs VC+++ 
-take image, solve, get coordinates, add diff to diff_VCp_RA and diff_VCp_DEC at 0
-average of diff_VCp_RA and average of diff_VCp_DEC
+1 coup de moteurs ALT+++  
+take image, solve, get coordinates, save diff as diff_ALTp_RA and diff_ALTp_DEC at 0
+1 coup de moteurs ALT+++  
+take image, solve, get coordinates, add diff to diff_ALTp_RA and diff_ALTp_DEC at 0
+1 coup de moteurs ALT+++ 
+take image, solve, get coordinates, add diff to diff_ALTp_RA and diff_ALTp_DEC at 0
+average of diff_ALTp_RA and average of diff_ALTp_DEC
 
-1 coup de moteur VC--- pour rattraper le jeu
-initialise diff_VCn_RA and diff_VCp_DEC at 0
+1 coup de moteur ALT--- pour rattraper le jeu
+initialise diff_ALTn_RA and diff_ALTp_DEC at 0
 take image, solve, get coordinates as RA_start and DEC_start
 start loop 3x
-1 coup de moteurs VC---  
-take image, solve, get coordinates, save diff as diff_VCn_RA and diff_VCn_DEC at 0
-1 coup de moteurs VC---  
-take image, solve, get coordinates, add diff to diff_VCn_RA and diff_VCn_DEC at 0
-1 coup de moteurs VC--- 
-take image, solve, get coordinates, add diff to diff_VCn_RA and diff_VCn_DEC at 0
-average of diff_VCn_RA and average of diff_VCn_DEC
+1 coup de moteurs ALT---  
+take image, solve, get coordinates, save diff as diff_ALTn_RA and diff_ALTn_DEC at 0
+1 coup de moteurs ALT---  
+take image, solve, get coordinates, add diff to diff_ALTn_RA and diff_ALTn_DEC at 0
+1 coup de moteurs ALT--- 
+take image, solve, get coordinates, add diff to diff_ALTn_RA and diff_ALTn_DEC at 0
+average of diff_ALTn_RA and average of diff_ALTn_DEC
 """
 
 root.mainloop()

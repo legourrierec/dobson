@@ -9,7 +9,7 @@
 ## functions:
 # hw_check                 verify if arduino is connected
 # get_sensors              send command to arduino and collect measurements
-# azimut and delta         send commands to arduino for stepper action           
+# azimut and alt         send commands to arduino for stepper action           
 
 ######################
 ### import modules ###
@@ -134,24 +134,24 @@ def azimut_moins_3():
     ser.write(bytes('C','UTF-8'))
 
 
-# delta
+# alt
 
-def delta_plus_1():
+def alt_plus_1():
     ser.write(bytes('I','UTF-8'))
 
-def delta_moins_1():
+def alt_moins_1():
     ser.write(bytes('H','UTF-8'))
 
-def delta_plus_2():
+def alt_plus_2():
     ser.write(bytes('D','UTF-8'))
 
-def delta_moins_2():
+def alt_moins_2():
     ser.write(bytes('E','UTF-8'))
 
-def delta_plus_3():
+def alt_plus_3():
     ser.write(bytes('U','UTF-8'))
 
-def delta_moins_3():
+def alt_moins_3():
     ser.write(bytes('J','UTF-8'))
 
 
@@ -201,7 +201,7 @@ focus_plusplus_button = ttk.Button(frame_focus, text=">>",command=focusplusplus)
 focus_plusplus_button.grid(column=4, row=0, sticky=tk.N, padx=10, pady=15, ipadx=5,ipady=5)
 
 
-# define frame for steppers azimut and alt ("vertical / delta")
+# define frame for steppers azimut and alt 
 frame_steppers = ttk.LabelFrame(root,width=360, height=300, borderwidth=1, relief="groove", labelanchor='n', text=" ALT - AZ CONTROL ")
 frame_steppers.grid(column=0, row=1, padx=20, pady=20, columnspan=7)
 
@@ -216,14 +216,14 @@ frame_steppers.columnconfigure(6, weight=1)
 
 # widgets
 
-delta_plus_3_button = ttk.Button(frame_steppers, text="+++",command=delta_plus_3)
-delta_plus_3_button.grid(column=3, row=0, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_plus_3_button = ttk.Button(frame_steppers, text="+++",command=alt_plus_3)
+alt_plus_3_button.grid(column=3, row=0, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
-delta_plus_2_button = ttk.Button(frame_steppers, text="++",command=delta_plus_2)
-delta_plus_2_button.grid(column=3, row=1, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_plus_2_button = ttk.Button(frame_steppers, text="++",command=alt_plus_2)
+alt_plus_2_button.grid(column=3, row=1, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
-delta_plus_1_button = ttk.Button(frame_steppers, text="+",command=delta_plus_1)
-delta_plus_1_button.grid(column=3, row=2, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_plus_1_button = ttk.Button(frame_steppers, text="+",command=alt_plus_1)
+alt_plus_1_button.grid(column=3, row=2, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
 azimut_moins_3_button = ttk.Button(frame_steppers, text="---",command=azimut_moins_3)
 azimut_moins_3_button.grid(column=0, row=3, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
@@ -245,14 +245,14 @@ azimut_plus_3_button = ttk.Button(frame_steppers, text="+++",command=azimut_plus
 azimut_plus_3_button.grid(column=6, row=3, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
 
-delta_moins_1_button = ttk.Button(frame_steppers, text="-",command=delta_moins_1)
-delta_moins_1_button.grid(column=3, row=4, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_moins_1_button = ttk.Button(frame_steppers, text="-",command=alt_moins_1)
+alt_moins_1_button.grid(column=3, row=4, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
-delta_moins_2_button = ttk.Button(frame_steppers, text="--",command=delta_moins_2)
-delta_moins_2_button.grid(column=3, row=5, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_moins_2_button = ttk.Button(frame_steppers, text="--",command=alt_moins_2)
+alt_moins_2_button.grid(column=3, row=5, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
-delta_moins_3_button = ttk.Button(frame_steppers, text="---",command=delta_moins_3)
-delta_moins_3_button.grid(column=3, row=6, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+alt_moins_3_button = ttk.Button(frame_steppers, text="---",command=alt_moins_3)
+alt_moins_3_button.grid(column=3, row=6, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
 
 
 # define frame for sensors
@@ -365,12 +365,12 @@ if path_to_device.is_file():
 else:
     info_label.config(text="arduino not connected", background=tk_bkgd, foreground='#FF0000', font='Helvetica 14 bold')
     refresh_button.configure(state='disabled')
-    delta_moins_3_button.configure(state='disabled')
-    delta_moins_2_button.configure(state='disabled')
-    delta_moins_1_button.configure(state='disabled')
-    delta_plus_3_button.configure(state='disabled')
-    delta_plus_2_button.configure(state='disabled')
-    delta_plus_1_button.configure(state='disabled')
+    alt_moins_3_button.configure(state='disabled')
+    alt_moins_2_button.configure(state='disabled')
+    alt_moins_1_button.configure(state='disabled')
+    alt_plus_3_button.configure(state='disabled')
+    alt_plus_2_button.configure(state='disabled')
+    alt_plus_1_button.configure(state='disabled')
     azimut_moins_3_button.configure(state='disabled')
     azimut_moins_2_button.configure(state='disabled')
     azimut_moins_1_button.configure(state='disabled')
