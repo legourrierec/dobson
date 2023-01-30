@@ -26,7 +26,7 @@ This project is about developing code that makes astrophotography possible with 
 
 # LINKS
 
- The whole project is being documented on [instructables.com](https://www.instructables.com/Dobson-Telescope-on-Equatorial-Table-WRITING-STILL/). You will see how I have built the telescope, starting from a blank disk of glass, all the way to fitting a camera for astrophotography.
+ The whole project is being documented on [instructables.com](https://www.instructables.com/Building-and-Motorising-a-300mm-F5-Dobson-Telescop/). You will see how I have built the telescope, starting from a blank disk of glass, all the way to fitting a camera for astrophotography.
 
 Photos taken with the deep-sky camera are posted on a website dedicated to astrophotography: [astrobin](https://www.astrobin.com/users/d.legourrierec/).
 
