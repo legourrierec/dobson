@@ -535,14 +535,14 @@ if (odroid_serial =='K') {
 // if odroid requests azimut run CCW
 if (odroid_serial =='X') {
           slow();
-          Azimut(-1,posi);
+          Azimut(1,posi);
           odroid_serial = ' '; // rien
  }
 
 // if odroid requests azimut run CW
 if (odroid_serial =='S') {
           slow();
-          Azimut(1,posi);
+          Azimut(-1,posi);
           odroid_serial = ' ';
  }
 
@@ -567,14 +567,14 @@ if (odroid_serial =='I') {
 // if odroid requests azimut run CCW
 if (odroid_serial =='A') {
           normal();
-          Azimut(-1,posi);
+          Azimut(1,posi);
           odroid_serial = ' '; // rien
  }
 
 // if odroid requests azimut run CW
 if (odroid_serial =='Z') {
           normal();
-          Azimut(1,posi);
+          Azimut(-1,posi);
           odroid_serial = ' ';
  }
 
@@ -597,7 +597,7 @@ if (odroid_serial =='D') {
 // if odroid requests azimut run CCW
 if (odroid_serial =='C') {
           fast();
-          Azimut(-1,posi);
+          Azimut(1,posi);
           delay(100);
           odroid_serial = ' ';
  }
@@ -605,7 +605,7 @@ if (odroid_serial =='C') {
 // if odroid requests azimut run CW
 if (odroid_serial =='V') {
           fast();
-          Azimut(1,posi);
+          Azimut(-1,posi);
           delay(100);
           odroid_serial = ' ';
  }
@@ -729,14 +729,14 @@ if (odroid_serial =='T') {
 // IR sensor section for stepper azimut
 
      case KEY_L:
-          Azimut(-1,posi);
+          Azimut(1,posi);
             if (IrReceiver.decode()) {;
             IrReceiver.resume();  
             } 
       break;
 
       case KEY_R:
-          Azimut(1,posi);
+          Azimut(-1,posi);
             if (IrReceiver.decode()) {
             IrReceiver.resume();        
             } 
