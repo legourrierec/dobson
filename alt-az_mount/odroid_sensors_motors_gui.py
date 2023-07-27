@@ -58,7 +58,7 @@ def hw_check():
     kill and relaunch window
     """
     root.destroy()
-    subprocess.run(['python3','dobson_sensors_motors_gui.py'])
+    subprocess.run(['python3','odroid_sensors_motors_gui.py'])
     
 
 def get_sensors():
@@ -168,6 +168,12 @@ def focusmoins():
 
 def focusmoinsmoins():
     ser.write(bytes('T','UTF-8'))
+    
+def focusmoinsfine():
+    ser.write(bytes('B','UTF-8'))
+    
+def focusplusfine():
+    ser.write(bytes('N','UTF-8'))        
 
 
     
@@ -185,20 +191,27 @@ frame_focus.columnconfigure(1, weight=1)
 frame_focus.columnconfigure(2, weight=1)
 frame_focus.columnconfigure(3, weight=1)
 frame_focus.columnconfigure(4, weight=1)
+frame_focus.columnconfigure(5, weight=1)
 
 # widgets
-focus_moinsmoins_button = ttk.Button(frame_focus, text="<<",command=focusmoinsmoins)
-focus_moinsmoins_button.grid(column=0, row=0, sticky=tk.N, padx=10, pady=15, ipadx=5,ipady=5)
+focus_moinsmoins_button = ttk.Button(frame_focus, text="<<<",command=focusmoinsmoins)
+focus_moinsmoins_button.grid(column=0, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
 
-focus_moins_button = ttk.Button(frame_focus, text="<",command=focusmoins)
-focus_moins_button.grid(column=1, row=0, sticky=tk.N, padx=10, pady=15, ipadx=5,ipady=5)
+focus_moins_button = ttk.Button(frame_focus, text="<<",command=focusmoins)
+focus_moins_button.grid(column=1, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
+
+focus_moins_fine_button = ttk.Button(frame_focus, text="<",command=focusmoinsfine)
+focus_moins_fine_button.grid(column=2, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
 
 
-focus_plus_button = ttk.Button(frame_focus, text=">",command=focusplus)
-focus_plus_button.grid(column=3, row=0, sticky=tk.N, padx=10, pady=15, ipadx=5,ipady=5)
+focus_plus_fine_button = ttk.Button(frame_focus, text=">",command=focusplusfine)
+focus_plus_fine_button.grid(column=3, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
 
-focus_plusplus_button = ttk.Button(frame_focus, text=">>",command=focusplusplus)
-focus_plusplus_button.grid(column=4, row=0, sticky=tk.N, padx=10, pady=15, ipadx=5,ipady=5)
+focus_plus_button = ttk.Button(frame_focus, text=">>",command=focusplus)
+focus_plus_button.grid(column=4, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
+
+focus_plusplus_button = ttk.Button(frame_focus, text=">>>",command=focusplusplus)
+focus_plusplus_button.grid(column=5, row=0, sticky=tk.N, padx=8, pady=15, ipadx=5,ipady=5)
 
 
 # define frame for steppers azimut and alt 
@@ -354,10 +367,10 @@ hw_check.grid(column=0, row=20, columnspan=2, sticky=tk.E, padx=5, pady=5, ipadx
 quit_button = ttk.Button(root, text="QUIT",command=exit)
 quit_button.grid(column=5, row=20, columnspan=2, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=10)
 
-path_to_device = Path('/dev/ttyACM0')
+arduino_is_here = subprocess.getoutput('ls /dev/ttyACM0')  #not very pythonian but path is_file returned false
 
 
-if path_to_device.is_file():
+if arduino_is_here == "/dev/ttyACM0":
     # initialise serial connection (device, baud rate)
     ser = serial.Serial('/dev/ttyACM0', 9600)
     # clear the serial line (optional)
@@ -381,6 +394,8 @@ else:
     focus_moins_button.configure(state='disabled')
     focus_plusplus_button.configure(state='disabled')
     focus_plus_button.configure(state='disabled')
+    focus_plus_fine_button.configure(state='disabled')
+    focus_moins_fine_button.configure(state='disabled')
    
 
 # the main loop keeps the window open

@@ -16,6 +16,7 @@
 // this makes use of a second instance of each stepper (Backlash_) with specific speed
 // custom movement for python goto, feedback for all actions
 // normalised name to ALT instead of DEC or DE
+// added fine focus
 
 // focus connector:
 
@@ -286,13 +287,13 @@ void Alt(int dir, int posi) {
           //}
 
 
-        if ( previous_alt_dir == -1*dir ) {
-        Backlash_AltStepper.setMaxSpeed(2500.0);
-        Backlash_AltStepper.setSpeed(2500*dir);
-            while(Backlash_AltStepper.currentPosition()!=1500*dir) {
-            Backlash_AltStepper.runSpeed();
-            }
-        } 
+      //  if ( previous_alt_dir == -1*dir ) {
+      //  Backlash_AltStepper.setMaxSpeed(2500.0);
+      //  Backlash_AltStepper.setSpeed(2500*dir);
+      //      while(Backlash_AltStepper.currentPosition()!=100*dir) {
+      //      Backlash_AltStepper.runSpeed();
+      //      }
+      //  } 
           
           
           //// with acceleration
@@ -323,13 +324,13 @@ void Azimut(int dir, int posi) {
           //  AzimutStepper.runSpeed();
           //}
 
-          if ( previous_azimut_dir == -1*dir ) {
-             Backlash_AzimutStepper.setMaxSpeed(2500.0);
-             Backlash_AzimutStepper.setSpeed(2500*dir);
-                while(Backlash_AzimutStepper.currentPosition()!=3850*dir) {
-                Backlash_AzimutStepper.runSpeed();
-                }
-          }
+          //if ( previous_azimut_dir == -1*dir ) {
+          //   Backlash_AzimutStepper.setMaxSpeed(2500.0);
+          //   Backlash_AzimutStepper.setSpeed(2500*dir);
+          //      while(Backlash_AzimutStepper.currentPosition()!=100*dir) {
+          //      Backlash_AzimutStepper.runSpeed();
+          //      }
+          //}
            
 
           //// with acceleration
@@ -625,9 +626,20 @@ if (odroid_serial =='U') {
           delay(100);
           odroid_serial = ' ';
  } 
- 
+
 
 // fine FOCUS (direction, position, speed)
+if (odroid_serial =='N') {
+          Focus(1,100,500);
+          odroid_serial = ' ';
+}
+
+if (odroid_serial =='B') {
+          Focus(-1,100,500);
+          odroid_serial = ' ';
+} 
+
+// normal FOCUS (direction, position, speed)
 if (odroid_serial =='F') {
           Focus(1,500,500);
           odroid_serial = ' ';

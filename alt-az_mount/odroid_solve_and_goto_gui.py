@@ -107,7 +107,7 @@ def hw_check():
     kill and relaunch window
     """
     root.destroy()
-    subprocess.run(['python3','solve_and_goto.py'])
+    subprocess.run(['python3','odroid_solve_and_goto_gui.py'])
     
 
 # stepper action
@@ -309,7 +309,7 @@ def browse_image():
     """
     global filename
     image_name.delete(0,'end')          # clear field from character 0 to end
-    filename = tk.filedialog.askopenfilename(initialdir="/home/dlg/ekos/",filetypes=[("png files","*.png"),("fits files","*.fits"),("fit files","*.fit")])
+    filename = tk.filedialog.askopenfilename(initialdir="/home/dlg/Documents/python",filetypes=[("png files","*.png"),("fits files","*.fits"),("fit files","*.fit")])
     image_name.insert(tk.END, filename) # fails without this line
 
     ref = reference.get()
@@ -345,12 +345,26 @@ def get_target_coord():
     # clear error label    
     error_label.config(text="               ", background=tk_bkgd)
     # build skyobject variable with spaces as in the data file
-    if ( cat == "M" and len(ref) == 1 ):
+    if ( cat == "Messier" and len(ref) == 1 ):
         skyobject = "M   " + ref
-    if ( cat == "M" and len(ref) == 2 ):
+    if ( cat == "Messier" and len(ref) == 2 ):
         skyobject = "M  " + ref
-    if ( cat == "M" and len(ref) == 3 ):
+    if ( cat == "Messier" and len(ref) == 3 ):
         skyobject = "M " + ref
+
+    if ( cat == "IC" and len(ref) == 2 ):
+        skyobject = "IC    " + ref
+    if ( cat == "IC" and len(ref) == 3 ):
+        skyobject = "IC   " + ref
+    if ( cat == "IC" and len(ref) == 4 ):
+        skyobject = "IC  " + ref        
+        
+    if ( cat == "VDB" and len(ref) == 1 ):
+        skyobject = "vdB   " + ref
+    if ( cat == "VDB" and len(ref) == 2 ):
+        skyobject = "vdB  " + ref
+    if ( cat == "VDB" and len(ref) == 3 ):
+        skyobject = "vdB " + ref                
 
     if ( cat == "NGC" and len(ref) == 1 ):
         skyobject = "NGC    " + ref
@@ -915,12 +929,11 @@ target_label = ttk.Label(frame_target, text="TARGET =>",anchor="w",width=18)
 target_label.grid(column=0, row=1, sticky=tk.W, padx=5, pady=15)
 target_label.configure(background=tk_bkgd)
 
-messier_radio_button = ttk.Radiobutton(frame_target, text="Messier", value="M", variable=catalog, width=12)
-messier_radio_button.grid(column=1, row=1, sticky=tk.E, padx=5, pady=5, ipadx=5,ipady=5)
-messier_radio_button.invoke()
 
-ngc_radio_button = ttk.Radiobutton(frame_target, text="NGC",value="NGC", variable=catalog, width=10)
-ngc_radio_button.grid(column=2, row=1, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)
+catalog_dropdown = ttk.Combobox(frame_target,textvariable=catalog,state='readonly')
+catalog_dropdown['values']=('Messier','NGC','IC','VDB')
+catalog_dropdown.grid(column=1, row=1, sticky=tk.E, padx=5, pady=5, ipadx=5,ipady=5) 
+catalog_dropdown.set('Messier')
 
 object_ref = ttk.Entry(frame_target,textvariable=reference,width=10)
 object_ref.grid(column=3, row=1, sticky=tk.W, padx=5, pady=5, ipadx=5,ipady=5)

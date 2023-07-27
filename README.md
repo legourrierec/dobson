@@ -136,8 +136,8 @@ You can see more images on my [astrobin](https://www.astrobin.com/users/d.legour
 
 # ROADMAP
 
-* v2. implement a function for autofocus and manage backlash
-* v3. autoguiding with a refractor added to one of the side bearings
+* implement a function for autofocus and manage backlash
+* autoguiding with a refractor added to one of the side bearings
 
 
 
